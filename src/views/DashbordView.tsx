@@ -18,7 +18,7 @@ export default function DashbordView() {
   if (data) return (
         <>
           <h1 className="text-5xl font-black">Mis Proyectos</h1>
-          <p className="text-2xl font-light text-gray-500 mt-5">Maneja y administra tus projectos</p>
+          <p className="text-2xl font-light text-gray-500 mt-5">Maneja y administra tus proyectos</p>
 
           <nav className='my-5'>
               <Link className=' bg-purple-400 hover:bg-purple-500 px-10 py-3 text-white text-xl font-bold cursor-pointer transition-colors' 
@@ -63,7 +63,7 @@ export default function DashbordView() {
                                   </Link>
                               </Menu.Item>
                               <Menu.Item>
-                                  <Link to={``}
+                                  <Link to={`/projects/${project._id}/edit`}
                                       className='block px-3 py-1 text-sm leading-6 text-gray-900'>
                                   Editar Proyecto
                                   </Link>
