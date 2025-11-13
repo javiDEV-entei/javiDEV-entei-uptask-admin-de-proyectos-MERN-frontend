@@ -41,6 +41,7 @@ export async function requestConfirmatinCode(formData: RequestConfirmationCodeFo
 
         const url ='/auth/request-code'
         const {data} = await api.post<string>(url, formData)
+        localStorage.setItem('AUTH_TOKEN', data)
         return data
         
     } catch (error) {
