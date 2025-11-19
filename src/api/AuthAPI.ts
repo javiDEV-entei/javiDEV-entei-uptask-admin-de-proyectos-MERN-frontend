@@ -41,7 +41,6 @@ export async function requestConfirmatinCode(formData: RequestConfirmationCodeFo
 
         const url ='/auth/request-code'
         const {data} = await api.post<string>(url, formData)
-        localStorage.setItem('AUTH_TOKEN', data)
         return data
         
     } catch (error) {
@@ -58,6 +57,9 @@ export async function authenticateUser(formData: UserLoginForm){
 
         const url ='/auth/login'
         const {data} = await api.post<string>(url, formData)
+        localStorage.setItem('AUTH_TOKEN', data)
+        console.log(data);
+        
         return data
         
     } catch (error) {
@@ -118,6 +120,21 @@ export async function updatePasswordWithToken({formData, token}: {formData : New
         }
         
     }
+}
+
+export async function getUser() {
+    try {
+        const {data} = await api('/auth/user')
+        console.log(data);
+        return
+        
+    } catch (error) {
+        if (isAxiosError(error) && error.response) {
+            throw new Error(error.response.data.error)
+            
+        }
+    }
+    
 }
 
 
