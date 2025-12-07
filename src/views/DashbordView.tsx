@@ -5,9 +5,12 @@ import {Link} from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient} from '@tanstack/react-query';
 import { deleteProject, getProjects } from '@/api/ProjectAPI'
 import { toast } from 'react-toastify'
+import { useAuth } from '@/hooks/useAuth';
+import { isManager } from '@/utils/policies';
 
 export default function DashbordView() {
-
+   
+   const {data: user, isLoading : authLoading} = useAuth()
   const { data, isLoading } = useQuery({
     queryKey:['projects'],
     queryFn: getProjects
@@ -25,12 +28,14 @@ export default function DashbordView() {
             
         }
     })
+    
+    
 
-  if(isLoading) return 'Cargando...'
+  if(isLoading && authLoading) return 'Cargando...'
  
   
 
-  if (data) return (
+  if (data && user) return (
         <>
           <h1 className="text-5xl font-black">Mis Proyectos</h1>
           <p className="text-2xl font-light text-gray-500 mt-5">Maneja y administra tus proyectos</p>
@@ -47,6 +52,16 @@ export default function DashbordView() {
       <li key={project._id} className="flex justify-between gap-x-6 px-5 py-10">
           <div className="flex min-w-0 gap-x-4">
               <div className="min-w-0 flex-auto space-y-2">
+                <div className=' mb-2'>
+                { isManager(project.manager, user._id)?
+                    <p className=' font-bold text-xs uppercase bg-indigo-50 text-indigo-500 border-2 border-indigo-500 rounded-lg
+                     inline-block py-1 px-5'>Manager</p>:
+
+                    <p className='font-bold text-xs uppercase bg-green-50 text-green-500 border-2 border-green-500 rounded-lg
+                     inline-block py-1 px-5'>Colaborador</p>
+                    }
+                </div>
+
                   <Link to={`/projects/${project._id}`}
                       className="text-gray-600 cursor-pointer hover:underline text-3xl font-bold"
                   >{project.projectName}</Link>
@@ -77,7 +92,10 @@ export default function DashbordView() {
                                   Ver Proyecto
                                   </Link>
                               </Menu.Item>
-                              <Menu.Item>
+
+                              {isManager(project.manager, user._id) && (
+                                <>
+                                    <Menu.Item>
                                   <Link to={`/projects/${project._id}/edit`}
                                       className='block px-3 py-1 text-sm leading-6 text-gray-900'>
                                   Editar Proyecto
@@ -92,6 +110,9 @@ export default function DashbordView() {
                                       Eliminar Proyecto
                                   </button>
                               </Menu.Item>
+                                </>
+                              )}
+                              
                       </Menu.Items>
                   </Transition>
               </Menu>
