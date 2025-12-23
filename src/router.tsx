@@ -12,6 +12,9 @@ import RequestNewCodeView from './views/auth/RequestNewCodeView'
 import ForgotPasswordview from './views/auth/ForgotPasswordView'
 import NewPasswordView from './views/auth/NewPasswordView'
 import ProjectTeamView from './views/projects/ProjectTeamView'
+import Profileview from './views/profile/Profileview'
+import ChangePasswordView from './views/profile/ChangePasswordView'
+import ProfileLayout from './layouts/ProfileLayout'
 
 export default function Router (){
 
@@ -25,8 +28,12 @@ export default function Router (){
                     <Route path='/projects/:projectId' element={<ProjectDetailsView/>}/>
                     <Route path='/projects/:projectId/edit' element={<EditProjectView/>}/>
                     <Route path='/projects/:projectId/team' element={<ProjectTeamView/>}/>
-                    
+
+                <Route element={<ProfileLayout/>}>
+                    <Route path='/profile' element={<Profileview/>}/>
+                    <Route path='/profile/update-password' element={<ChangePasswordView/>}/>
                 </Route>
+             </Route>
 
 
 
