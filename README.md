@@ -1,69 +1,77 @@
-# React + TypeScript + Vite
+# UpTask — Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+SPA de **UpTask**, una aplicación de administración de proyectos y tareas (estilo Kanban) construida con React 19, TypeScript y Vite. Consume la API REST del [backend de UpTask](../uptask_backend).
 
-Currently, two official plugins are available:
+## Funcionalidades
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Autenticación completa: registro, confirmación de cuenta por código, inicio de sesión, recuperación y cambio de contraseña.
+- Gestión de proyectos: crear, editar, eliminar y listar proyectos.
+- Tablero de tareas con **drag & drop** entre estados (`pending`, `onHold`, `inProgress`, `underReview`, `completed`).
+- Gestión de equipos: búsqueda de usuarios por email, alta/baja de miembros por proyecto.
+- Notas/comentarios dentro de cada tarea.
+- Perfil de usuario: edición de datos y cambio de contraseña.
 
-## Expanding the ESLint configuration
+## Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **React 19** + **TypeScript**
+- **Vite 7** como bundler
+- **React Router v7** para el ruteo
+- **TanStack Query** para el manejo de estado del servidor (fetching, caché, invalidación)
+- **React Hook Form** + **Zod** para formularios y validación de esquemas
+- **Tailwind CSS 4** para estilos
+- **dnd-kit** para el drag & drop del tablero
+- **Axios** para las llamadas HTTP
+- **React Toastify** para notificaciones
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Estructura del proyecto
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```
+src/
+├── api/          # Llamadas HTTP agrupadas por entidad (Auth, Project, Task, Team, Note, Profile)
+├── components/   # Componentes organizados por dominio (auth, projects, tasks, team, notes, profile)
+├── views/        # Pantallas asociadas a cada ruta
+├── layouts/      # AppLayout, AuthLayout, ProfileLayout
+├── hooks/        # Hooks reutilizables (useAuth)
+├── lib/          # Configuración de Axios
+├── types/        # Esquemas y tipos (Zod)
+├── locales/      # Textos en español
+├── router.tsx    # Definición de rutas
+└── main.tsx      # Punto de entrada
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Puesta en marcha
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+1. Instalar dependencias:
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+   ```bash
+   npm install
+   ```
+
+2. Crear un archivo `.env.local` con la URL de la API:
+
+   ```
+   VITE_API_URL=http://localhost:4000
+   ```
+
+3. Levantar el servidor de desarrollo:
+
+   ```bash
+   npm run dev
+   ```
+
+## Scripts disponibles
+
+| Script            | Descripción                              |
+| ------------------ | ----------------------------------------- |
+| `npm run dev`       | Levanta el servidor de desarrollo (Vite)  |
+| `npm run build`     | Compila TypeScript y genera el build      |
+| `npm run lint`      | Corre ESLint sobre el proyecto            |
+| `npm run preview`   | Sirve el build de producción localmente   |
+
+## Despliegue
+
+Configurado para desplegarse en **Vercel** (`vercel.json`) como SPA, redirigiendo cualquier ruta sin extensión a `index.html` para que React Router maneje el enrutamiento del lado del cliente.
+
+## Proyecto relacionado
+
+- [UpTask Backend](../uptask_backend) — API REST en Node.js, Express y MongoDB que da soporte a esta aplicación.
